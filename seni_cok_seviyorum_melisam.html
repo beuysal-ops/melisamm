@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seni Çok Seviyorum Melisam 💞</title>
+<style>
+body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    text-align: center;
+    background: linear-gradient(135deg, #ffe4e1, #ffcdd2);
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+h1 {
+    color: #d32f2f;
+    font-size: 2.3em;
+    margin: 15px;
+    padding: 0 20px;
+}
+.subtext {
+    color: #b71c1c;
+    font-size: 1.2em;
+    margin-top: -5px;
+    font-style: italic;
+}
+.heart {
+    font-size: 3em;
+    animation: float 3s ease-in-out infinite;
+}
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0); }
+}
+.buttons-container {
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+    margin-top: 25px;
+}
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    position: relative;
+}
+button {
+    font-size: 1.2em;
+    padding: 14px 30px;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transition: transform 0.25s ease, background-color 0.3s;
+    outline: none;
+    touch-action: manipulation;
+}
+#yes {
+    background-color: #4caf50;
+    color: white;
+}
+#no {
+    background-color: #f44336;
+    color: white;
+    position: absolute;
+}
+#yes:hover, #no:hover {
+    transform: scale(1.08);
+}
+#response {
+    display: none;
+    font-size: 1.8em;
+    color: #b71c1c;
+    margin-top: 30px;
+    animation: fadeIn 1.5s ease-in-out forwards;
+}
+@keyframes fadeIn {
+    0% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+}
+.confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1000;
+}
+@media (max-width:600px){
+    h1 { font-size: 1.8em; }
+    .subtext { font-size: 1em; }
+    button { font-size: 1em; padding: 12px 22px; }
+    .heart { font-size: 2.3em; }
+    #response { font-size: 1.4em; }
+}
+</style>
+</head>
+<body>
+<div class="heart">❤</div>
+<h1>Barışalım mı artık?</h1>
+<p class="subtext">Çünkü sensiz bir gün bile eksik hissediyorum Melisam 💔</p>
+<div class="buttons-container">
+    <div class="buttons">
+        <button id="yes">Evet 💚</button>
+        <button id="no">Hayır 💔</button>
+    </div>
+</div>
+<div id="response">
+    💞 Seni çok ama çok seviyorum Melisam 💞<br>
+    Sen gülünce dünya güzelleşiyor 🌸<br>
+    Kalbim hep seninle, sonsuza dek ❤️
+</div>
+<div class="confetti-container" id="confettiContainer"></div>
+
+<script>
+const yesBtn = document.getElementById('yes');
+const noBtn = document.getElementById('no');
+const response = document.getElementById('response');
+const confettiContainer = document.getElementById('confettiContainer');
+let noClickCount = 0;
+
+noBtn.addEventListener('click', () => {
+    const messages = ["Emin misin?", "Cidden mi?", "Bir daha düşün!", "Lütfen Melisam...", "Son şans 😢"];
+    noBtn.textContent = messages[noClickCount % messages.length];
+    noClickCount++;
+
+    const container = document.querySelector('.buttons-container');
+    const maxX = container.clientWidth - noBtn.offsetWidth - 20;
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * 40;
+
+    noBtn.style.left = randomX + "px";
+    noBtn.style.top = randomY + "px";
+
+    yesBtn.style.transform = `scale(${1 + noClickCount * 0.1})`;
+});
+
+yesBtn.addEventListener('click', () => {
+    response.style.display = 'block';
+    createConfetti();
+});
+
+function createConfetti(){
+    for(let i=0;i<60;i++){
+        const c = document.createElement('div');
+        c.innerHTML = '❤';
+        c.style.position = 'absolute';
+        c.style.fontSize = (Math.random()*24+16)+'px';
+        c.style.top = '-30px';
+        c.style.left = Math.random()*100+'vw';
+        c.style.color = ['#e91e63','#f44336','#ff9800','#4caf50','#2196f3'][Math.floor(Math.random()*5)];
+        confettiContainer.appendChild(c);
+        animateConfetti(c);
+    }
+}
+
+function animateConfetti(el){
+    const duration = Math.random()*3+2;
+    const start = Date.now();
+    const animate = ()=>{
+        const elapsed = (Date.now()-start)/1000;
+        if(elapsed<duration){
+            el.style.top = (elapsed/duration)*(window.innerHeight+50)+'px';
+            el.style.transform = `rotate(${elapsed*360}deg)`;
+            requestAnimationFrame(animate);
+        }else{
+            el.remove();
+        }
+    };
+    requestAnimationFrame(animate);
+}
+</script>
+</body>
+</html>
