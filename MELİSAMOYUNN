@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Melisa 💖</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body{
+      margin:0;
+      font-family: Arial, Helvetica, sans-serif;
+      height:100vh;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: radial-gradient(circle at top, #ffe6f2 0%, #e6f7ff 55%, #fff 100%);
+      position: relative;
+    }
+
+    /* Arka plan süsleri */
+    .bg-hearts{
+      position:absolute;
+      inset:0;
+      overflow:hidden;
+      pointer-events:none;
+      opacity:0.35;
+    }
+    .bg-heart{
+      position:absolute;
+      font-size: 22px;
+      animation: drift 10s linear infinite;
+      filter: blur(0.2px);
+    }
+    @keyframes drift{
+      0%{ transform: translateY(110vh) translateX(0) rotate(0deg); opacity:0;}
+      10%{opacity:1;}
+      100%{ transform: translateY(-20vh) translateX(40px) rotate(360deg); opacity:0;}
+    }
+
+    /* Ortadaki kart */
+    .card{
+      width:min(460px, 92vw);
+      background: rgba(255,255,255,0.92);
+      border-radius: 22px;
+      padding: 28px 22px;
+      box-shadow: 0 16px 45px rgba(0,0,0,0.15);
+      text-align:center;
+      position: relative;
+      backdrop-filter: blur(8px);
+    }
+
+    .title{
+      font-size:26px;
+      font-weight:900;
+      margin:0 0 8px;
+    }
+
+    .subtitle{
+      margin:0 0 18px;
+      opacity:0.85;
+      font-size:15px;
+      line-height:1.4;
+    }
+
+    .linkBtn{
+      display:inline-block;
+      text-decoration:none;
+      background: linear-gradient(135deg, #ff4d88, #ff7ab6);
+      color:white;
+      padding: 12px 18px;
+      border-radius: 16px;
+      font-weight:900;
+      letter-spacing:0.2px;
+      transition: transform .15s ease;
+      box-shadow: 0 10px 20px rgba(255,77,136,0.35);
+    }
+    .linkBtn:hover{ transform: scale(1.05); }
+
+    /* Modal */
+    .overlay{
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,0.35);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+      z-index: 20;
+    }
+
+    .modal{
+      width:min(500px, 94vw);
+      background: rgba(255,255,255,0.95);
+      border-radius:22px;
+      padding:22px;
+      box-shadow: 0 18px 55px rgba(0,0,0,0.25);
+      text-align:center;
+      position: relative;
+      overflow:hidden;
+    }
+
+    /* modal içindeki minik süs çizgileri */
+    .sparkleLine{
+      position:absolute;
+      inset:auto -40px  -60px -40px;
+      height:160px;
+      background: radial-gradient(circle, rgba(255,77,136,0.25) 0%, rgba(255,255,255,0) 55%);
+      transform: rotate(-8deg);
+      pointer-events:none;
+    }
+
+    .close{
+      position:absolute;
+      top:10px;
+      right:12px;
+      border:0;
+      background: rgba(0,0,0,0.05);
+      padding:6px 10px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:900;
+      z-index: 5;
+    }
+
+    .question{
+      font-size:20px;
+      font-weight:900;
+      margin: 8px 0 6px;
+    }
+
+    .miniText{
+      font-size:14px;
+      opacity:0.8;
+      margin: 0 0 14px;
+    }
+
+    .btns{
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+      position: relative;
+      margin-top: 8px;
+      min-height: 60px;
+    }
+
+    button{
+      border:0;
+      padding:12px 18px;
+      border-radius:16px;
+      cursor:pointer;
+      font-weight:900;
+      font-size:16px;
+      transition: transform .15s ease;
+      min-width:130px;
+      box-shadow: 0 10px 18px rgba(0,0,0,0.10);
+    }
+    button:hover{ transform: scale(1.06); }
+
+    .yes{
+      background: linear-gradient(135deg, #22c55e, #57e389);
+      color:white;
+    }
+
+    .no{
+      background: linear-gradient(135deg, #ef4444, #ff6b6b);
+      color:white;
+      position: relative;
+    }
+
+    .result{
+      margin-top:14px;
+      font-size:16px;
+      font-weight:800;
+      opacity:0.95;
+      min-height: 22px;
+    }
+
+    /* Büyük romantik yazı */
+    .bigLove{
+      font-size:18px;
+      font-weight:900;
+      margin-top:8px;
+      display:none;
+    }
+
+    /* Ekrana kalp yağdırma */
+    .floatHeart{
+      position: fixed;
+      bottom: -20px;
+      font-size: 20px;
+      animation: floatUp 2.4s linear forwards;
+      user-select:none;
+      pointer-events:none;
+      z-index: 50;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.15));
+    }
+    @keyframes floatUp{
+      to{
+        transform: translateY(-120vh) rotate(30deg);
+        opacity:0;
+      }
+    }
+
+    /* Konfeti */
+    .confetti{
+      position: fixed;
+      top:-10px;
+      width: 10px;
+      height: 14px;
+      border-radius: 3px;
+      animation: confettiFall 1.7s linear forwards;
+      z-index: 60;
+      pointer-events:none;
+      opacity: 0.95;
+    }
+    @keyframes confettiFall{
+      to{
+        transform: translateY(110vh) rotate(360deg);
+        opacity:0;
+      }
+    }
+
+    /* mini parıltılar */
+    .sparkle{
+      position: fixed;
+      font-size: 14px;
+      animation: sparklePop 1.1s ease-out forwards;
+      z-index: 70;
+      pointer-events:none;
+    }
+    @keyframes sparklePop{
+      0%{ transform: scale(0.3); opacity:0; }
+      40%{ opacity:1; transform: scale(1.2); }
+      100%{ transform: scale(0.9) translateY(-40px); opacity:0; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Arka plan kalpleri -->
+  <div class="bg-hearts" id="bgHearts"></div>
+
+  <div class="card">
+    <div class="title">Melisa 💖</div>
+    <div class="subtitle">
+      Minik bir sürpriz… <br/>
+      Linke basınca kalbim sana bir şey soracak 😌✨
+    </div>
+
+    <a href="#" class="linkBtn" id="surprizLink">Tıkla ve öğren 💘</a>
+  </div>
+
+  <!-- Modal -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <div class="sparkleLine"></div>
+      <button class="close" id="closeBtn">✕</button>
+
+      <div class="question">Bitanem… oyun oynayalım mı? 🎮💞</div>
+      <div class="miniText">Eğer “Evet” dersen dünyam güzelleşir 😌</div>
+
+      <div class="btns" id="btnArea">
+        <button class="yes" id="yesBtn">Evet 😍</button>
+        <button class="no" id="noBtn">Hayır 🙄</button>
+      </div>
+
+      <div class="result" id="resultText"></div>
+      <div class="bigLove" id="bigLove">Seni çok seviyorum Melisa 💖✨</div>
+    </div>
+  </div>
+
+  <script>
+    const surprizLink = document.getElementById("surprizLink");
+    const overlay = document.getElementById("overlay");
+    const closeBtn = document.getElementById("closeBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const resultText = document.getElementById("resultText");
+    const bigLove = document.getElementById("bigLove");
+    const btnArea = document.getElementById("btnArea");
+    const bgHearts = document.getElementById("bgHearts");
+
+    function openModal(){
+      overlay.style.display = "flex";
+      resultText.textContent = "";
+      bigLove.style.display = "none";
+      noBtn.style.position = "relative";
+      noBtn.style.left = "0px";
+      noBtn.style.top = "0px";
+    }
+
+    function closeModal(){
+      overlay.style.display = "none";
+    }
+
+    surprizLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      openModal();
+    });
+
+    closeBtn.addEventListener("click", closeModal);
+    overlay.addEventListener("click", (e) => {
+      if(e.target === overlay) closeModal();
+    });
+
+    /* Arka plan kalplerini üret */
+    function createBackgroundHearts(){
+      for(let i=0;i<26;i++){
+        const h = document.createElement("div");
+        h.className = "bg-heart";
+        h.textContent = ["💖","💗","💞","💘"][Math.floor(Math.random()*4)];
+        h.style.left = Math.random()*100 + "vw";
+        h.style.animationDuration = (7 + Math.random()*8) + "s";
+        h.style.animationDelay = (Math.random()*5) + "s";
+        h.style.fontSize = (14 + Math.random()*26) + "px";
+        bgHearts.appendChild(h);
+      }
+    }
+    createBackgroundHearts();
+
+    /* Kalp yağdırma */
+    function spawnHearts(count = 45){
+      for(let i=0;i<count;i++){
+        const h = document.createElement("div");
+        h.className = "floatHeart";
+        h.textContent = ["💖","💗","💘","💞","💕"][Math.floor(Math.random()*5)];
+        h.style.left = Math.random()*100 + "vw";
+        h.style.fontSize = (14 + Math.random()*28) + "px";
+        h.style.animationDuration = (1.6 + Math.random()*1.8) + "s";
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), 3200);
+      }
+    }
+
+    /* Konfeti */
+    function spawnConfetti(count = 30){
+      for(let i=0;i<count;i++){
+        const c = document.createElement("div");
+        c.className = "confetti";
+        c.style.left = Math.random()*100 + "vw";
+        c.style.animationDuration = (1.2 + Math.random()*1.2) + "s";
+        c.style.transform = `rotate(${Math.random()*360}deg)`;
+        // rastgele renk
+        c.style.background = `hsl(${Math.floor(Math.random()*360)}, 90%, 60%)`;
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 2300);
+      }
+    }
+
+    /* Parıltı */
+    function sparkleBurst(count = 18){
+      for(let i=0;i<count;i++){
+        const s = document.createElement("div");
+        s.className = "sparkle";
+        s.textContent = ["✨","⭐","💫"][Math.floor(Math.random()*3)];
+        s.style.left = (40 + Math.random()*20) + "vw";
+        s.style.top = (40 + Math.random()*20) + "vh";
+        s.style.fontSize = (12 + Math.random()*18) + "px";
+        document.body.appendChild(s);
+        setTimeout(() => s.remove(), 1200);
+      }
+    }
+
+    /* EVET */
+    yesBtn.addEventListener("click", () => {
+      resultText.textContent = "Yaşasınnn! 💘 O zaman beraber oynuyoruz 😄";
+      bigLove.style.display = "block";
+
+      spawnHearts(70);
+      spawnConfetti(50);
+      sparkleBurst(25);
+    });
+
+    /* HAYIR butonu kaçsın 😄 */
+    function moveNoButton(){
+      const areaRect = btnArea.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+
+      const maxX = areaRect.width - btnRect.width;
+      const maxY = areaRect.height - btnRect.height;
+
+      const x = Math.random() * (maxX < 0 ? 0 : maxX);
+      const y = Math.random() * (maxY < 0 ? 0 : maxY);
+
+      noBtn.style.position = "absolute";
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    }
+
+    noBtn.addEventListener("mouseenter", () => {
+      moveNoButton();
+      resultText.textContent = "Hayır demek yok 😌💞";
+    });
+
+    noBtn.addEventListener("click", () => {
+      // tıklarsa bile kaçsın 😄
+      moveNoButton();
+      resultText.textContent = "Yakalayamazsın 😄💘";
+      sparkleBurst(8);
+    });
+  </script>
+</body>
+</html>
