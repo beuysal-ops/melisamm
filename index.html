@@ -1,532 +1,206 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Melisam Sevgilim 💖</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Melisa ❤️ Berkay</title>
 
-  <style>
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      height:100vh;
-      overflow:hidden;
-      font-family: Arial, Helvetica, sans-serif;
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins&display=swap" rel="stylesheet">
 
-      /* Uzay arka plan */
-      background:
-        radial-gradient(circle at 20% 20%, rgba(141, 74, 255, 0.25), transparent 40%),
-        radial-gradient(circle at 70% 30%, rgba(255, 77, 136, 0.18), transparent 45%),
-        radial-gradient(circle at 40% 80%, rgba(77, 163, 255, 0.18), transparent 40%),
-        linear-gradient(180deg, #070A17, #02030A 65%, #000);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      position:relative;
-    }
+<style>
+body{
+margin:0;
+height:100vh;
+background:radial-gradient(circle at top,#0b0033,#000);
+overflow:hidden;
+font-family:Poppins,sans-serif;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+}
 
-    /* Fullscreen canvas (yıldız + kalp havai fişek) */
-    canvas{
-      position:fixed;
-      inset:0;
-      z-index:1;
-      pointer-events:none;
-    }
+#sky, #effects{
+position:fixed;
+inset:0;
+pointer-events:none;
+}
 
-    .card{
-      z-index:5;
-      width:min(470px, 92vw);
-      background: rgba(255,255,255,0.10);
-      border: 1px solid rgba(255,255,255,0.16);
-      backdrop-filter: blur(10px);
-      border-radius: 22px;
-      padding: 26px 22px;
-      text-align:center;
-      box-shadow: 0 18px 55px rgba(0,0,0,0.35);
-      color: #fff;
-    }
+.star{
+position:absolute;
+width:2px;
+height:2px;
+background:white;
+opacity:.7;
+animation:twinkle 2s infinite alternate;
+}
 
-    .title{
-      font-size:26px;
-      font-weight:900;
-      margin:0 0 8px;
-      letter-spacing: 0.3px;
-      text-shadow: 0 0 20px rgba(255, 77, 136, 0.25);
-    }
+@keyframes twinkle{
+from{opacity:.2}
+to{opacity:1}
+}
 
-    .subtitle{
-      margin:0 0 18px;
-      opacity:0.85;
-      font-size:15px;
-      line-height:1.4;
-    }
+.heart{
+position:absolute;
+font-size:16px;
+animation:float 6s linear forwards;
+}
 
-    .linkBtn{
-      display:inline-block;
-      text-decoration:none;
-      background: linear-gradient(135deg, #ff3d87, #b84dff);
-      color:white;
-      padding: 12px 18px;
-      border-radius: 16px;
-      font-weight:900;
-      transition: transform .15s ease;
-      box-shadow: 0 10px 25px rgba(255, 61, 135, 0.35);
-    }
-    .linkBtn:hover{ transform: scale(1.06); }
+@keyframes float{
+from{transform:translateY(100vh) scale(.6)}
+to{transform:translateY(-120vh) scale(1.3);opacity:0}
+}
 
-    /* Modal */
-    .overlay{
-      position:fixed;
-      inset:0;
-      background: rgba(0,0,0,0.45);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:16px;
-      z-index:10;
-    }
+.firework{
+position:absolute;
+width:6px;
+height:6px;
+border-radius:50%;
+background:gold;
+animation:boom 1.2s ease-out forwards;
+}
 
-    .modal{
-      width:min(520px, 94vw);
-      background: rgba(255,255,255,0.10);
-      border: 1px solid rgba(255,255,255,0.16);
-      backdrop-filter: blur(12px);
-      border-radius: 22px;
-      padding: 22px;
-      box-shadow: 0 18px 60px rgba(0,0,0,0.35);
-      text-align:center;
-      color:#fff;
-      position:relative;
-      overflow:hidden;
-    }
+@keyframes boom{
+to{
+transform:scale(18);
+opacity:0;
+}
+}
 
-    .glow{
-      position:absolute;
-      inset:auto -60px -90px -60px;
-      height:180px;
-      background: radial-gradient(circle, rgba(255,61,135,0.25), transparent 60%);
-      transform: rotate(-10deg);
-      pointer-events:none;
-    }
+.container{
+position:relative;
+z-index:5;
+text-align:center;
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(12px);
+padding:30px;
+border-radius:20px;
+box-shadow:0 0 40px rgba(255,0,150,.4);
+}
 
-    .close{
-      position:absolute;
-      top:10px;
-      right:12px;
-      border:0;
-      background: rgba(255,255,255,0.12);
-      color:#fff;
-      padding:6px 10px;
-      border-radius:12px;
-      cursor:pointer;
-      font-weight:900;
-      z-index:5;
-    }
+.envelope{
+width:320px;
+height:200px;
+background:#ff7eb3;
+margin:auto;
+border-radius:15px;
+cursor:pointer;
+position:relative;
+overflow:hidden;
+}
 
-    .question{
-      font-size:20px;
-      font-weight:900;
-      margin: 8px 0 6px;
-      text-shadow: 0 0 18px rgba(255, 61, 135, 0.18);
-    }
+.flap{
+position:absolute;
+width:100%;
+height:100px;
+background:#ff9acb;
+clip-path:polygon(0 0,100% 0,50% 100%);
+transition:1s;
+transform-origin:top;
+}
 
-    .miniText{
-      font-size:14px;
-      opacity:0.85;
-      margin: 0 0 14px;
-    }
+.envelope.open .flap{
+transform:rotateX(180deg);
+}
 
-    .btns{
-      display:flex;
-      justify-content:center;
-      gap:12px;
-      flex-wrap:wrap;
-      position: relative;
-      margin-top: 10px;
-      min-height: 62px;
-    }
+.letter{
+position:absolute;
+background:white;
+color:#333;
+width:90%;
+height:85%;
+left:50%;
+bottom:-100%;
+transform:translateX(-50%);
+border-radius:12px;
+padding:15px;
+transition:1s;
+overflow:auto;
+font-size:14px;
+}
 
-    button.action{
-      border:0;
-      padding:12px 18px;
-      border-radius:16px;
-      cursor:pointer;
-      font-weight:900;
-      font-size:16px;
-      transition: transform .15s ease;
-      min-width:140px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.18);
-      color:#fff;
-    }
-    button.action:hover{ transform: scale(1.06); }
+.envelope.open .letter{
+bottom:10px;
+}
 
-    .yes{ background: linear-gradient(135deg, #ff3d87, #b84dff); }
-    .no{ background: linear-gradient(135deg, #ff4b4b, #ff7b7b); position:relative; }
-
-    .result{
-      margin-top:14px;
-      font-size:16px;
-      font-weight:800;
-      opacity:0.95;
-      min-height:22px;
-    }
-
-    .bigLove{
-      margin-top:8px;
-      font-size:18px;
-      font-weight:900;
-      display:none;
-      text-shadow: 0 0 22px rgba(255, 61, 135, 0.25);
-    }
-  </style>
+.counter{
+margin-top:20px;
+font-size:20px;
+font-weight:bold;
+color:#ffd1ea;
+}
+</style>
 </head>
 
 <body>
-  <!-- Canvas: yıldızlar + kalp havai fişek -->
-  <canvas id="space"></canvas>
 
-  <div class="card">
-    <div class="title">Melisam Sevgilim 💖</div>
-    <div class="subtitle">
-      Uzay kadar sonsuz bir soru 😌💫<br/>
-      Linke basınca kalbim konuşacak…
-    </div>
-    <a href="#" class="linkBtn" id="surprizLink">Tıkla 💘</a>
-  </div>
+<div id="sky"></div>
+<div id="effects"></div>
 
-  <div class="overlay" id="overlay">
-    <div class="modal">
-      <div class="glow"></div>
-      <button class="close" id="closeBtn">✕</button>
+<div class="container">
+<h1 style="font-family:Pacifico;">Melisa ❤️</h1>
 
-      <div class="question">Bitanem… Her şeyimmm oyun oynayalım mı Aşkk? 🎮💖</div>
-      <div class="miniText">Eğer “Evet” dersen kalbim havai fişek olur. Yıldızlara kadar uçar patlar iz bırakırsın sevgilim 💞</div>
+<div class="envelope" onclick="this.classList.toggle('open')">
+<div class="flap"></div>
 
-      <div class="btns" id="btnArea">
-        <button class="action yes" id="yesBtn">Evet 😍</button>
-        <button class="action no" id="noBtn">Hayır 🙄</button>
-      </div>
+<div class="letter">
+<b>Birtanem, Sevgilim, Aşkım Melisa,</b><br><br>
+Seninle birlikte olduğumuz her an benim için çok kıymetli.  
+Yanımda olduğunda hayat daha güzel, kalbim daha mutlu atıyor.  
 
-      <div class="result" id="resultText"></div>
-      <div class="bigLove" id="bigLove">Yaşasınnn Seni Çok Seviyorum Her şeyim. Sabırsızlanıyorumm 💖💫</div>
-    </div>
-  </div>
+Her gülüşün içimi ısıtıyor, her bakışın bana huzur veriyor.  
+Sen benim en güzel şansımsın.  
 
-  <script>
-    // =========================
-    // STARFIELD + HEART FIREWORKS
-    // =========================
-    const canvas = document.getElementById("space");
-    const ctx = canvas.getContext("2d");
+Nice anılara, nice senelere el ele…  
 
-    let W, H, DPR;
-    function resize(){
-      DPR = Math.min(2, window.devicePixelRatio || 1);
-      W = canvas.width = Math.floor(window.innerWidth * DPR);
-      H = canvas.height = Math.floor(window.innerHeight * DPR);
-      canvas.style.width = window.innerWidth + "px";
-      canvas.style.height = window.innerHeight + "px";
-    }
-    window.addEventListener("resize", resize);
-    resize();
+<b>Seni çok seviyorum.</b><br><br>
+— Berkay ❤️
+</div>
+</div>
 
-    // Stars
-    const stars = [];
-    const STAR_COUNT = 180;
+<div class="counter">
+828 gündür birlikteyiz 💞
+</div>
+</div>
 
-    function initStars(){
-      stars.length = 0;
-      for(let i=0;i<STAR_COUNT;i++){
-        stars.push({
-          x: Math.random() * W,
-          y: Math.random() * H,
-          r: (Math.random() * 1.8 + 0.2) * DPR,
-          tw: Math.random() * Math.PI * 2,
-          speed: 0.006 + Math.random() * 0.02,
-          alpha: 0.2 + Math.random() * 0.8
-        });
-      }
-    }
-    initStars();
+<script>
+const sky=document.getElementById("sky");
+const effects=document.getElementById("effects");
 
-    // Hearts (particles)
-    const particles = [];
-    const rockets = [];
+// yıldızlar
+for(let i=0;i<120;i++){
+let s=document.createElement("div");
+s.className="star";
+s.style.left=Math.random()*100+"vw";
+s.style.top=Math.random()*100+"vh";
+sky.appendChild(s);
+}
 
-    function drawHeart(x, y, size, alpha){
-      // Heart shape (vector)
-      // size in px
-      ctx.save();
-      ctx.globalAlpha = alpha;
+// kalpler
+setInterval(()=>{
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML="💖";
+h.style.left=Math.random()*100+"vw";
+h.style.fontSize=12+Math.random()*18+"px";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),6000);
+},180);
 
-      // Pink glow
-      ctx.shadowColor = "rgba(255,61,135,0.65)";
-      ctx.shadowBlur = 18 * DPR;
+// havai fişek
+setInterval(()=>{
+let f=document.createElement("div");
+f.className="firework";
+f.style.left=Math.random()*100+"vw";
+f.style.top=Math.random()*80+"vh";
+effects.appendChild(f);
+setTimeout(()=>f.remove(),1200);
+},900);
+</script>
 
-      ctx.fillStyle = "rgba(255,61,135,1)";
-      ctx.beginPath();
-
-      const s = size;
-      // classic heart param
-      ctx.moveTo(x, y);
-      ctx.bezierCurveTo(x - s, y - s, x - 2*s, y + s*0.6, x, y + 2*s);
-      ctx.bezierCurveTo(x + 2*s, y + s*0.6, x + s, y - s, x, y);
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.restore();
-    }
-
-    function spawnRocket(){
-      const startX = (0.15 + Math.random()*0.7) * W;
-      const startY = H + 10 * DPR;
-
-      rockets.push({
-        x: startX,
-        y: startY,
-        vx: (Math.random()*2 - 1) * 1.0 * DPR,
-        vy: -(10 + Math.random()*6) * DPR,
-        targetY: (0.18 + Math.random()*0.35) * H,
-        exploded: false,
-        life: 0
-      });
-    }
-
-    function explode(x, y){
-      const count = 40 + Math.floor(Math.random()*30);
-      for(let i=0;i<count;i++){
-        const ang = (Math.PI * 2) * (i / count) + (Math.random()*0.25);
-        const sp = (2 + Math.random()*6) * DPR;
-
-        particles.push({
-          x, y,
-          vx: Math.cos(ang) * sp,
-          vy: Math.sin(ang) * sp,
-          g: 0.14 * DPR,
-          size: (4 + Math.random()*6) * DPR,
-          alpha: 1,
-          decay: 0.012 + Math.random()*0.02
-        });
-      }
-
-      // extra "ring" explosion hearts
-      const ringCount = 18;
-      for(let i=0;i<ringCount;i++){
-        const ang = (Math.PI * 2) * (i / ringCount);
-        const sp = (7 + Math.random()*2) * DPR;
-
-        particles.push({
-          x, y,
-          vx: Math.cos(ang) * sp,
-          vy: Math.sin(ang) * sp,
-          g: 0.10 * DPR,
-          size: (5 + Math.random()*5) * DPR,
-          alpha: 1,
-          decay: 0.015 + Math.random()*0.018
-        });
-      }
-    }
-
-    // Small floating hearts always (subtle)
-    function ambientHearts(){
-      if(Math.random() < 0.18){
-        particles.push({
-          x: Math.random()*W,
-          y: H + 10*DPR,
-          vx: (Math.random()*2 - 1) * 0.4 * DPR,
-          vy: -(2 + Math.random()*2) * DPR,
-          g: -0.02 * DPR,
-          size: (3 + Math.random()*4) * DPR,
-          alpha: 0.35,
-          decay: 0.004 + Math.random()*0.005
-        });
-      }
-    }
-
-    // Shooting star (rare)
-    const shooting = [];
-    function spawnShootingStar(){
-      if(Math.random() < 0.005){
-        shooting.push({
-          x: Math.random()*W,
-          y: Math.random()*(0.5*H),
-          vx: (7 + Math.random()*10) * DPR,
-          vy: (2 + Math.random()*6) * DPR,
-          life: 0,
-          max: 18 + Math.random()*18
-        });
-      }
-    }
-
-    let fireworksMode = false; // becomes true after "Evet"
-    let rocketTimer = 0;
-
-    function animate(){
-      ctx.clearRect(0,0,W,H);
-
-      // Stars
-      for(const s of stars){
-        s.tw += s.speed;
-        const a = s.alpha * (0.4 + 0.6*Math.abs(Math.sin(s.tw)));
-        ctx.save();
-        ctx.globalAlpha = a;
-        ctx.fillStyle = "white";
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
-        ctx.fill();
-        ctx.restore();
-      }
-
-      // Shooting stars
-      for(let i=shooting.length-1;i>=0;i--){
-        const st = shooting[i];
-        st.life++;
-        st.x += st.vx;
-        st.y += st.vy;
-        ctx.save();
-        ctx.globalAlpha = 0.9;
-        ctx.strokeStyle = "rgba(255,255,255,0.9)";
-        ctx.lineWidth = 2*DPR;
-        ctx.beginPath();
-        ctx.moveTo(st.x, st.y);
-        ctx.lineTo(st.x - st.vx*2, st.y - st.vy*2);
-        ctx.stroke();
-        ctx.restore();
-
-        if(st.life > st.max || st.x > W+50 || st.y > H+50) shooting.splice(i,1);
-      }
-
-      // Rockets
-      for(let i=rockets.length-1;i>=0;i--){
-        const r = rockets[i];
-        r.life++;
-        r.x += r.vx;
-        r.y += r.vy;
-        r.vy += 0.10 * DPR;
-
-        // tiny heart as rocket head
-        drawHeart(r.x, r.y, 2.6*DPR, 0.9);
-
-        if(!r.exploded && r.y <= r.targetY){
-          r.exploded = true;
-          explode(r.x, r.y);
-          rockets.splice(i,1);
-        }
-        if(r.life > 200) rockets.splice(i,1);
-      }
-
-      // Particles
-      for(let i=particles.length-1;i>=0;i--){
-        const p = particles[i];
-        p.x += p.vx;
-        p.y += p.vy;
-        p.vy += p.g;
-        p.alpha -= p.decay;
-
-        drawHeart(p.x, p.y, p.size, Math.max(0, p.alpha));
-
-        if(p.alpha <= 0 || p.y > H + 80*DPR) particles.splice(i,1);
-      }
-
-      // ambient hearts
-      ambientHearts();
-
-      // fireworks mode: keep launching rockets
-      if(fireworksMode){
-        rocketTimer++;
-        if(rocketTimer > 18){
-          rocketTimer = 0;
-          // launch 1-2 rockets
-          spawnRocket();
-          if(Math.random() < 0.45) spawnRocket();
-        }
-      } else {
-        // even when not active: occasional shooting star
-        spawnShootingStar();
-      }
-
-      requestAnimationFrame(animate);
-    }
-    animate();
-
-    // =========================
-    // UI: Modal + Buttons
-    // =========================
-    const surprizLink = document.getElementById("surprizLink");
-    const overlay = document.getElementById("overlay");
-    const closeBtn = document.getElementById("closeBtn");
-    const yesBtn = document.getElementById("yesBtn");
-    const noBtn = document.getElementById("noBtn");
-    const resultText = document.getElementById("resultText");
-    const bigLove = document.getElementById("bigLove");
-    const btnArea = document.getElementById("btnArea");
-
-    function openModal(){
-      overlay.style.display = "flex";
-      resultText.textContent = "";
-      bigLove.style.display = "none";
-      fireworksMode = false;
-      noBtn.style.position = "relative";
-      noBtn.style.left = "0px";
-      noBtn.style.top = "0px";
-    }
-    function closeModal(){
-      overlay.style.display = "none";
-    }
-
-    surprizLink.addEventListener("click", (e) => {
-      e.preventDefault();
-      openModal();
-      // mini kalp patlaması (küçük)
-      explode(W*0.5, H*0.65);
-    });
-
-    closeBtn.addEventListener("click", closeModal);
-    overlay.addEventListener("click", (e) => {
-      if(e.target === overlay) closeModal();
-    });
-
-    // EVET -> Kalp havai fişek modu başlasın
-    yesBtn.addEventListener("click", () => {
-      resultText.textContent = "Yaşasınnn! 💖 O zaman beraber oynuyoruz 😍";
-      bigLove.style.display = "block";
-
-      fireworksMode = true;
-
-      // ilk patlama + birkaç roket
-      explode(W*0.5, H*0.58);
-      spawnRocket(); spawnRocket(); spawnRocket();
-    });
-
-    // HAYIR -> kaçan buton (tatlı troll)
-    function moveNoButton(){
-      const areaRect = btnArea.getBoundingClientRect();
-      const btnRect = noBtn.getBoundingClientRect();
-
-      const maxX = areaRect.width - btnRect.width;
-      const maxY = areaRect.height - btnRect.height;
-
-      const x = Math.random() * (maxX < 0 ? 0 : maxX);
-      const y = Math.random() * (maxY < 0 ? 0 : maxY);
-
-      noBtn.style.position = "absolute";
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
-    }
-
-    noBtn.addEventListener("mouseenter", () => {
-      moveNoButton();
-      resultText.textContent = "Hayır demek yok 😌💞";
-      explode(W*(0.45+Math.random()*0.1), H*(0.55+Math.random()*0.1));
-    });
-
-    noBtn.addEventListener("click", () => {
-      moveNoButton();
-      resultText.textContent = "Yakalayamazsın 😄💘";
-      explode(W*(0.45+Math.random()*0.1), H*(0.55+Math.random()*0.1));
-    });
-  </script>
 </body>
 </html>
+
+
 
 
