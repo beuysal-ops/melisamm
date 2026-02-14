@@ -3,203 +3,250 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Melisa ❤️ Berkay</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins&display=swap" rel="stylesheet">
+<title>Melisam ❤️ Berkay</title>
 
 <style>
-body{
-margin:0;
-height:100vh;
-background:radial-gradient(circle at top,#0b0033,#000);
-overflow:hidden;
-font-family:Poppins,sans-serif;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;font-family:Arial,sans-serif}
 
-#sky, #effects{
+video{
 position:fixed;
 inset:0;
+width:100%;
+height:100%;
+object-fit:cover;
+z-index:-4;
+}
+
+.overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.35);
+z-index:-3;
+}
+
+.float-heart{
+position:absolute;
+font-size:18px;
 pointer-events:none;
-}
-
-.star{
-position:absolute;
-width:2px;
-height:2px;
-background:white;
-opacity:.7;
-animation:twinkle 2s infinite alternate;
-}
-
-@keyframes twinkle{
-from{opacity:.2}
-to{opacity:1}
-}
-
-.heart{
-position:absolute;
-font-size:16px;
 animation:float 6s linear forwards;
 }
 
 @keyframes float{
-from{transform:translateY(100vh) scale(.6)}
-to{transform:translateY(-120vh) scale(1.3);opacity:0}
+from{transform:translateY(110vh) scale(.5)}
+to{transform:translateY(-130vh) scale(1.5);opacity:0}
 }
 
-.firework{
+.spark{
 position:absolute;
-width:6px;
-height:6px;
+width:4px;
+height:4px;
 border-radius:50%;
-background:gold;
-animation:boom 1.2s ease-out forwards;
+animation:explode 1.5s ease-out forwards;
 }
 
-@keyframes boom{
+@keyframes explode{
 to{
-transform:scale(18);
+transform:translate(var(--x),var(--y)) scale(.3);
 opacity:0;
 }
 }
 
 .container{
-position:relative;
-z-index:5;
-text-align:center;
-background:rgba(255,255,255,.08);
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:rgba(255,255,255,.15);
 backdrop-filter:blur(12px);
-padding:30px;
-border-radius:20px;
-box-shadow:0 0 40px rgba(255,0,150,.4);
+padding:28px;
+border-radius:22px;
+color:white;
+text-align:center;
+width:330px;
+box-shadow:0 0 45px rgba(255,0,150,.7);
 }
 
 .envelope{
-width:320px;
-height:200px;
-background:#ff7eb3;
-margin:auto;
-border-radius:15px;
+background:#ff6fb3;
+border-radius:14px;
+height:190px;
+margin-top:16px;
 cursor:pointer;
 position:relative;
 overflow:hidden;
 }
 
 .flap{
-position:absolute;
-width:100%;
-height:100px;
+height:95px;
 background:#ff9acb;
 clip-path:polygon(0 0,100% 0,50% 100%);
 transition:1s;
 transform-origin:top;
 }
 
-.envelope.open .flap{
-transform:rotateX(180deg);
-}
+.envelope.open .flap{transform:rotateX(180deg)}
 
 .letter{
 position:absolute;
 background:white;
 color:#333;
 width:90%;
-height:85%;
+height:82%;
 left:50%;
-bottom:-100%;
+bottom:-140%;
 transform:translateX(-50%);
 border-radius:12px;
-padding:15px;
+padding:14px;
+font-size:14px;
 transition:1s;
 overflow:auto;
-font-size:14px;
 }
 
-.envelope.open .letter{
-bottom:10px;
+.envelope.open .letter{bottom:8px}
+
+.seal{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:36px;
+cursor:pointer;
 }
 
 .counter{
-margin-top:20px;
-font-size:20px;
+margin-top:14px;
 font-weight:bold;
 color:#ffd1ea;
+font-size:18px;
 }
+
+.final{
+position:fixed;
+inset:0;
+display:none;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+background:rgba(0,0,0,.65);
+color:white;
+font-size:28px;
+text-align:center;
+z-index:5;
+}
+.final.show{display:flex}
 </style>
 </head>
 
 <body>
 
-<div id="sky"></div>
-<div id="effects"></div>
+<video autoplay muted loop playsinline>
+<source src="love.mp4" type="video/mp4">
+</video>
+
+<div class="overlay"></div>
 
 <div class="container">
-<h1 style="font-family:Pacifico;">Melisa ❤️</h1>
+<h2>Melisam ❤️</h2>
 
-<div class="envelope" onclick="this.classList.toggle('open')">
+<div class="envelope" id="env">
 <div class="flap"></div>
+<div class="seal" id="seal">💖</div>
 
 <div class="letter">
-<b>Birtanem, Sevgilim, Aşkım Melisa,</b><br><br>
-Seninle birlikte olduğumuz her an benim için çok kıymetli.  
-Yanımda olduğunda hayat daha güzel, kalbim daha mutlu atıyor.  
+<b>Birtanem, Sevgilim, Aşkım Melisam,</b><br><br>
+Bazen seni ne kadar sevdiğimi kelimelere dökmek zor geliyor ama kalbim her gün sana biraz daha bağlanıyor.  
+Yanımda olduğunda içim huzurla doluyor, gülüşün bütün yorgunluğumu alıp götürüyor.  
 
-Her gülüşün içimi ısıtıyor, her bakışın bana huzur veriyor.  
-Sen benim en güzel şansımsın.  
+828 gündür el eleyiz ve her geçen gün seni daha çok seviyorum.  
+Sen benim en güzel tesadüfüm, en kıymetli alışkanlığım, en büyük mutluluğumsun.  
 
-Nice anılara, nice senelere el ele…  
+İyi ki varsın Melisam…  
+İyi ki benim sevgilimsin.  
 
-<b>Seni çok seviyorum.</b><br><br>
+<b>Seni sonsuz kere seviyorum.</b><br><br>
 — Berkay ❤️
 </div>
 </div>
 
-<div class="counter">
-828 gündür birlikteyiz 💞
+<div class="counter">828 gündür birlikteyiz 💞</div>
 </div>
+
+<div class="final" id="final">
+Sevgililer Günümüz Kutlu Olsun Sevgilim 💖<br>
+Seni Çok Seviyorum
 </div>
 
 <script>
-const sky=document.getElementById("sky");
-const effects=document.getElementById("effects");
+const seal=document.getElementById("seal");
+const env=document.getElementById("env");
+const final=document.getElementById("final");
 
-// yıldızlar
-for(let i=0;i<120;i++){
-let s=document.createElement("div");
-s.className="star";
-s.style.left=Math.random()*100+"vw";
-s.style.top=Math.random()*100+"vh";
-sky.appendChild(s);
-}
+seal.onclick=()=>{
+env.classList.toggle("open");
+heartExplosion();
+setTimeout(()=>finalScreen(),3500);
+};
 
-// kalpler
-setInterval(()=>{
+function heartExplosion(){
+for(let i=0;i<60;i++){
 let h=document.createElement("div");
-h.className="heart";
+h.className="float-heart";
 h.innerHTML="💖";
-h.style.left=Math.random()*100+"vw";
-h.style.fontSize=12+Math.random()*18+"px";
+h.style.left=window.innerWidth/2+"px";
+h.style.top=window.innerHeight/2+"px";
+h.style.fontSize=14+Math.random()*26+"px";
 document.body.appendChild(h);
 setTimeout(()=>h.remove(),6000);
-},180);
+}
+}
 
-// havai fişek
 setInterval(()=>{
-let f=document.createElement("div");
-f.className="firework";
-f.style.left=Math.random()*100+"vw";
-f.style.top=Math.random()*80+"vh";
-effects.appendChild(f);
-setTimeout(()=>f.remove(),1200);
-},900);
+let h=document.createElement("div");
+h.className="float-heart";
+h.innerHTML="💗";
+h.style.left=Math.random()*100+"vw";
+h.style.fontSize=12+Math.random()*22+"px";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),6000);
+},150);
+
+function firework(){
+let x=Math.random()*window.innerWidth;
+let y=Math.random()*window.innerHeight*0.7;
+for(let i=0;i<40;i++){
+let s=document.createElement("div");
+s.className="spark";
+s.style.left=x+"px";
+s.style.top=y+"px";
+s.style.background=`hsl(${Math.random()*360},100%,60%)`;
+let angle=Math.random()*Math.PI*2;
+let dist=100+Math.random()*170;
+s.style.setProperty("--x",Math.cos(angle)*dist+"px");
+s.style.setProperty("--y",Math.sin(angle)*dist+"px");
+document.body.appendChild(s);
+setTimeout(()=>s.remove(),1500);
+}
+}
+setInterval(firework,600);
+
+function finalScreen(){
+final.classList.add("show");
+for(let i=0;i<120;i++){
+let h=document.createElement("div");
+h.className="float-heart";
+h.innerHTML="❤️";
+h.style.left=Math.random()*100+"vw";
+h.style.fontSize=18+Math.random()*26+"px";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),6000);
+}
+}
 </script>
 
 </body>
 </html>
+
 
 
 
