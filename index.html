@@ -9,130 +9,66 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%;overflow:hidden;font-family:Arial,sans-serif}
 
-video{
-position:fixed;
-inset:0;
-width:100%;
-height:100%;
-object-fit:cover;
-z-index:-4;
-}
+video{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:-4}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:-3}
 
-.overlay{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.35);
-z-index:-3;
-}
+.float-heart{position:absolute;font-size:18px;pointer-events:none;animation:float 6s linear forwards}
+@keyframes float{from{transform:translateY(110vh) scale(.5)}to{transform:translateY(-130vh) scale(1.5);opacity:0}}
 
-.float-heart{
-position:absolute;
-font-size:18px;
-pointer-events:none;
-animation:float 6s linear forwards;
-}
-
-@keyframes float{
-from{transform:translateY(110vh) scale(.5)}
-to{transform:translateY(-130vh) scale(1.5);opacity:0}
-}
-
-.spark{
-position:absolute;
-width:4px;
-height:4px;
-border-radius:50%;
-animation:explode 1.5s ease-out forwards;
-}
-
-@keyframes explode{
-to{
-transform:translate(var(--x),var(--y)) scale(.3);
-opacity:0;
-}
-}
+.spark{position:absolute;width:4px;height:4px;border-radius:50%;animation:explode 1.5s ease-out forwards}
+@keyframes explode{to{transform:translate(var(--x),var(--y)) scale(.3);opacity:0}}
 
 .container{
-position:absolute;
-top:50%;
-left:50%;
+position:absolute;top:50%;left:50%;
 transform:translate(-50%,-50%);
 background:rgba(255,255,255,.15);
 backdrop-filter:blur(12px);
-padding:28px;
-border-radius:22px;
-color:white;
-text-align:center;
-width:330px;
-box-shadow:0 0 45px rgba(255,0,150,.7);
+padding:28px;border-radius:22px;
+color:white;text-align:center;width:340px;
+box-shadow:0 0 45px rgba(255,0,150,.7)
 }
 
-.envelope{
-background:#ff6fb3;
-border-radius:14px;
-height:190px;
-margin-top:16px;
-cursor:pointer;
-position:relative;
-overflow:hidden;
-}
-
-.flap{
-height:95px;
-background:#ff9acb;
-clip-path:polygon(0 0,100% 0,50% 100%);
-transition:1s;
-transform-origin:top;
-}
-
+.envelope{background:#ff6fb3;border-radius:14px;height:190px;margin-top:16px;cursor:pointer;position:relative;overflow:hidden}
+.flap{height:95px;background:#ff9acb;clip-path:polygon(0 0,100% 0,50% 100%);transition:1s;transform-origin:top}
 .envelope.open .flap{transform:rotateX(180deg)}
 
 .letter{
-position:absolute;
-background:white;
-color:#333;
-width:90%;
-height:82%;
-left:50%;
-bottom:-140%;
-transform:translateX(-50%);
-border-radius:12px;
-padding:14px;
-font-size:14px;
-transition:1s;
-overflow:auto;
+position:absolute;background:white;width:90%;height:82%;
+left:50%;bottom:-140%;transform:translateX(-50%);
+border-radius:12px;padding:14px;font-size:14px;transition:1s;overflow:auto
 }
-
 .envelope.open .letter{bottom:8px}
 
-.seal{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-font-size:36px;
-cursor:pointer;
-}
+.note-pink{color:#e91e63;font-weight:600}
+.note-red{color:#d50000;font-weight:600}
 
-.counter{
-margin-top:14px;
-font-weight:bold;
-color:#ffd1ea;
-font-size:18px;
+.seal{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:36px;cursor:pointer}
+
+.counter{margin-top:14px;font-weight:bold;color:#ffd1ea;font-size:18px}
+
+.final-btn{
+margin-top:15px;
+padding:10px 18px;
+border:none;
+border-radius:20px;
+background:#ff3b8d;
+color:white;
+font-size:15px;
+cursor:pointer;
+display:none;
 }
 
 .final{
-position:fixed;
-inset:0;
+position:fixed;inset:0;
 display:none;
 justify-content:center;
 align-items:center;
 flex-direction:column;
 background:rgba(0,0,0,.65);
 color:white;
-font-size:28px;
+font-size:30px;
 text-align:center;
-z-index:5;
+z-index:6;
 }
 .final.show{display:flex}
 </style>
@@ -154,22 +90,28 @@ z-index:5;
 <div class="seal" id="seal">💖</div>
 
 <div class="letter">
-<b>Birtanem, Sevgilim, Aşkım Melisam,</b><br><br>
-Bazen seni ne kadar sevdiğimi kelimelere dökmek zor geliyor ama kalbim her gün sana biraz daha bağlanıyor.  
-Yanımda olduğunda içim huzurla doluyor, gülüşün bütün yorgunluğumu alıp götürüyor.  
+<span class="note-pink">Birtanem, Sevgilim, Aşkım Melisam,</span><br><br>
 
-828 gündür el eleyiz ve her geçen gün seni daha çok seviyorum.  
-Sen benim en güzel tesadüfüm, en kıymetli alışkanlığım, en büyük mutluluğumsun.  
+<span class="note-red">
+Seninle geçirdiğim her an kalbimde ayrı bir yer tutuyor.
+</span><br><br>
 
-İyi ki varsın Melisam…  
-İyi ki benim sevgilimsin.  
+Sen yanımdayken dünya daha güzel, hayat daha anlamlı oluyor.  
+Gülüşün bana huzur, varlığın güç veriyor.  
 
-<b>Seni sonsuz kere seviyorum.</b><br><br>
+828 gündür el eleyiz ve her gün sana biraz daha aşık oluyorum.  
+
+İyi ki benim sevgilimsin…  
+İyi ki Melisamsın…  
+
+<br><b class="note-pink">Seni her şeyden çok seviyorum.</b><br><br>
 — Berkay ❤️
 </div>
 </div>
 
 <div class="counter">828 gündür birlikteyiz 💞</div>
+
+<button class="final-btn" id="finalBtn">Son Sürpriz ❤️</button>
 </div>
 
 <div class="final" id="final">
@@ -181,15 +123,16 @@ Seni Çok Seviyorum
 const seal=document.getElementById("seal");
 const env=document.getElementById("env");
 const final=document.getElementById("final");
+const btn=document.getElementById("finalBtn");
 
 seal.onclick=()=>{
-env.classList.toggle("open");
+env.classList.add("open");
 heartExplosion();
-setTimeout(()=>finalScreen(),3500);
+setTimeout(()=>btn.style.display="inline-block",2500);
 };
 
 function heartExplosion(){
-for(let i=0;i<60;i++){
+for(let i=0;i<70;i++){
 let h=document.createElement("div");
 h.className="float-heart";
 h.innerHTML="💖";
@@ -209,43 +152,44 @@ h.style.left=Math.random()*100+"vw";
 h.style.fontSize=12+Math.random()*22+"px";
 document.body.appendChild(h);
 setTimeout(()=>h.remove(),6000);
-},150);
+},120);
 
 function firework(){
 let x=Math.random()*window.innerWidth;
 let y=Math.random()*window.innerHeight*0.7;
-for(let i=0;i<40;i++){
+for(let i=0;i<45;i++){
 let s=document.createElement("div");
 s.className="spark";
 s.style.left=x+"px";
 s.style.top=y+"px";
 s.style.background=`hsl(${Math.random()*360},100%,60%)`;
 let angle=Math.random()*Math.PI*2;
-let dist=100+Math.random()*170;
+let dist=120+Math.random()*190;
 s.style.setProperty("--x",Math.cos(angle)*dist+"px");
 s.style.setProperty("--y",Math.sin(angle)*dist+"px");
 document.body.appendChild(s);
 setTimeout(()=>s.remove(),1500);
 }
 }
-setInterval(firework,600);
+setInterval(firework,500);
 
-function finalScreen(){
+btn.onclick=()=>{
 final.classList.add("show");
-for(let i=0;i<120;i++){
+for(let i=0;i<140;i++){
 let h=document.createElement("div");
 h.className="float-heart";
 h.innerHTML="❤️";
 h.style.left=Math.random()*100+"vw";
-h.style.fontSize=18+Math.random()*26+"px";
+h.style.fontSize=18+Math.random()*28+"px";
 document.body.appendChild(h);
 setTimeout(()=>h.remove(),6000);
 }
-}
+};
 </script>
 
 </body>
 </html>
+
 
 
 
